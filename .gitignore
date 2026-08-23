@@ -20,6 +20,11 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# Backups de base de datos (NO subir: dump de producción con datos de usuarios)
+BASE DE DATOS/
+*.backup
+*.dump
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
