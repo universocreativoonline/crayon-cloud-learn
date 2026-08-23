@@ -25,6 +25,12 @@ BASE DE DATOS/
 *.backup
 *.dump
 
+# Node portátil (runtime local, no versionar)
+.node/
+
+# El proyecto usa bun (bun.lock); no versionar el lock de npm
+package-lock.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
