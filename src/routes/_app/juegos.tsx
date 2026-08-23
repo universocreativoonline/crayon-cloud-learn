@@ -9,6 +9,7 @@ import {
   type Drawing,
   type PaletteColor,
 } from "@/lib/queries";
+import { hasSilhouette } from "@/lib/silhouettes";
 import { speak, speakBilingual } from "@/lib/speech";
 import { useChild } from "@/lib/child-context";
 
@@ -238,11 +239,16 @@ function Memory({ pool }: { pool: Drawing[] }) {
 
 /* ---------- 3. ¿Quién soy? (silueta) ---------- */
 function WhoAmI({ pool }: { pool: Drawing[] }) {
-  const animals = useMemo(() => pool.filter((d) => ANIMAL_RE.test(d.line_art_path ?? "")), [pool]);
+  // Solo animales que tengan archivo de silueta real; así nunca se ve el ícono roto.
+  const animals = useMemo(
+    () => pool.filter((d) => ANIMAL_RE.test(d.line_art_path ?? "") && hasSilhouette(d.line_art_path)),
+    [pool],
+  );
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
   const [solved, setSolved] = useState(false);
   const [wrongId, setWrongId] = useState<string | null>(null);
+  const [shadowFallback, setShadowFallback] = useState(false);
 
   const { target, options } = useMemo(() => {
     const s = shuffle(animals);
@@ -257,16 +263,23 @@ function WhoAmI({ pool }: { pool: Drawing[] }) {
     if (solved) return;
     if (d.id === target.id) {
       setSolved(true); setScore((s) => s + 1); speakBilingual(target.name_en, target.name_es);
-      setTimeout(() => { setSolved(false); setWrongId(null); setRound((r) => r + 1); }, 1300);
+      setTimeout(() => { setSolved(false); setWrongId(null); setShadowFallback(false); setRound((r) => r + 1); }, 1300);
     } else { setWrongId(d.id); setTimeout(() => setWrongId(null), 500); }
   }
+
+  const shadowSrc = solved || shadowFallback ? assetUrl(target.line_art_path) : silUrl(target);
 
   return (
     <div>
       <Score value={score} />
       <p className="mb-3 text-center font-display text-lg font-bold text-ink">¿Qué animal es esta sombra?</p>
       <div className="mx-auto mb-5 grid aspect-square w-48 place-items-center rounded-3xl bg-surface p-4 shadow-soft">
-        <img src={(solved ? assetUrl(target.line_art_path) : silUrl(target)) ?? ""} alt="" className="h-full w-full object-contain transition-all" />
+        <img
+          src={shadowSrc ?? ""}
+          alt=""
+          className={`h-full w-full object-contain transition-all ${shadowFallback ? "opacity-60 grayscale" : ""}`}
+          onError={() => setShadowFallback(true)}
+        />
       </div>
       {solved && <p className="mb-3 text-center font-display text-xl font-bold text-secondary">¡Es {target.name_en}! 🎉</p>}
       <div className="grid grid-cols-3 gap-3">
