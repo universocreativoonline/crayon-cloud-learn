@@ -433,9 +433,9 @@ function LandingPage() {
                   <li key={f} className="flex gap-2"><span className="text-secondary">✓</span> {f}</li>
                 ))}
               </ul>
-              <button type="button" className={`mt-5 block w-full rounded-2xl py-3 text-center font-display font-bold active:scale-95 ${p.best ? "bg-primary text-primary-foreground shadow-crayon" : "border border-border text-ink"}`}>
+              <a href={p.url} className={`mt-5 block w-full rounded-2xl py-3 text-center font-display font-bold active:scale-95 ${p.best ? "bg-primary text-primary-foreground shadow-crayon" : "border border-border text-ink"}`}>
                 Suscribirme
-              </button>
+              </a>
             </div>
           ))}
         </div>
