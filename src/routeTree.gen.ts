@@ -26,6 +26,7 @@ import { Route as AppPadresIndexRouteImport } from './routes/_app/padres.index'
 import { Route as AppMundosIndexRouteImport } from './routes/_app/mundos.index'
 import { Route as ApiPublicSendEmailRouteImport } from './routes/api/public/send-email'
 import { Route as ApiPublicPaymentWebhookRouteImport } from './routes/api/public/payment-webhook'
+import { Route as ApiPublicHotmartRouteImport } from './routes/api/public/hotmart'
 import { Route as AppPadresProgresoRouteImport } from './routes/_app/padres.progreso'
 import { Route as AppPadresPlanesRouteImport } from './routes/_app/padres.planes'
 import { Route as AppPadresAjustesRouteImport } from './routes/_app/padres.ajustes'
@@ -116,6 +117,11 @@ const ApiPublicPaymentWebhookRoute = ApiPublicPaymentWebhookRouteImport.update({
   path: '/api/public/payment-webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicHotmartRoute = ApiPublicHotmartRouteImport.update({
+  id: '/api/public/hotmart',
+  path: '/api/public/hotmart',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppPadresProgresoRoute = AppPadresProgresoRouteImport.update({
   id: '/progreso',
   path: '/progreso',
@@ -160,6 +166,7 @@ export interface FileRoutesByFullPath {
   '/padres/ajustes': typeof AppPadresAjustesRoute
   '/padres/planes': typeof AppPadresPlanesRoute
   '/padres/progreso': typeof AppPadresProgresoRoute
+  '/api/public/hotmart': typeof ApiPublicHotmartRoute
   '/api/public/payment-webhook': typeof ApiPublicPaymentWebhookRoute
   '/api/public/send-email': typeof ApiPublicSendEmailRoute
   '/mundos/': typeof AppMundosIndexRoute
@@ -181,6 +188,7 @@ export interface FileRoutesByTo {
   '/padres/ajustes': typeof AppPadresAjustesRoute
   '/padres/planes': typeof AppPadresPlanesRoute
   '/padres/progreso': typeof AppPadresProgresoRoute
+  '/api/public/hotmart': typeof ApiPublicHotmartRoute
   '/api/public/payment-webhook': typeof ApiPublicPaymentWebhookRoute
   '/api/public/send-email': typeof ApiPublicSendEmailRoute
   '/mundos': typeof AppMundosIndexRoute
@@ -206,6 +214,7 @@ export interface FileRoutesById {
   '/_app/padres/ajustes': typeof AppPadresAjustesRoute
   '/_app/padres/planes': typeof AppPadresPlanesRoute
   '/_app/padres/progreso': typeof AppPadresProgresoRoute
+  '/api/public/hotmart': typeof ApiPublicHotmartRoute
   '/api/public/payment-webhook': typeof ApiPublicPaymentWebhookRoute
   '/api/public/send-email': typeof ApiPublicSendEmailRoute
   '/_app/mundos/': typeof AppMundosIndexRoute
@@ -231,6 +240,7 @@ export interface FileRouteTypes {
     | '/padres/ajustes'
     | '/padres/planes'
     | '/padres/progreso'
+    | '/api/public/hotmart'
     | '/api/public/payment-webhook'
     | '/api/public/send-email'
     | '/mundos/'
@@ -252,6 +262,7 @@ export interface FileRouteTypes {
     | '/padres/ajustes'
     | '/padres/planes'
     | '/padres/progreso'
+    | '/api/public/hotmart'
     | '/api/public/payment-webhook'
     | '/api/public/send-email'
     | '/mundos'
@@ -276,6 +287,7 @@ export interface FileRouteTypes {
     | '/_app/padres/ajustes'
     | '/_app/padres/planes'
     | '/_app/padres/progreso'
+    | '/api/public/hotmart'
     | '/api/public/payment-webhook'
     | '/api/public/send-email'
     | '/_app/mundos/'
@@ -291,6 +303,7 @@ export interface RootRouteChildren {
   PerfilNinoRoute: typeof PerfilNinoRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ApiHotmartRoute: typeof ApiHotmartRoute
+  ApiPublicHotmartRoute: typeof ApiPublicHotmartRoute
   ApiPublicPaymentWebhookRoute: typeof ApiPublicPaymentWebhookRoute
   ApiPublicSendEmailRoute: typeof ApiPublicSendEmailRoute
 }
@@ -416,6 +429,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicPaymentWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/hotmart': {
+      id: '/api/public/hotmart'
+      path: '/api/public/hotmart'
+      fullPath: '/api/public/hotmart'
+      preLoaderRoute: typeof ApiPublicHotmartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_app/padres/progreso': {
       id: '/_app/padres/progreso'
       path: '/progreso'
@@ -515,6 +535,7 @@ const rootRouteChildren: RootRouteChildren = {
   PerfilNinoRoute: PerfilNinoRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ApiHotmartRoute: ApiHotmartRoute,
+  ApiPublicHotmartRoute: ApiPublicHotmartRoute,
   ApiPublicPaymentWebhookRoute: ApiPublicPaymentWebhookRoute,
   ApiPublicSendEmailRoute: ApiPublicSendEmailRoute,
 }
