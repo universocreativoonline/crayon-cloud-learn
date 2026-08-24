@@ -78,7 +78,15 @@ const BENEFITS = [
   ["📚", "Amor por aprender", "Asocia el inglés con algo que disfruta. Aprender deja de ser una tarea y se convierte en su juego favorito."],
 ];
 
-const PLANS = [
+const PLANS: {
+  name: string;
+  price: string;
+  per: string;
+  note: string;
+  best: boolean;
+  tag?: string;
+  url: string;
+}[] = [
   {
     name: "Mensual",
     price: "4.99",
