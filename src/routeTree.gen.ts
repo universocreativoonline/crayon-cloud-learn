@@ -16,6 +16,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiHotmartRouteImport } from './routes/api/hotmart'
 import { Route as AppPadresRouteImport } from './routes/_app/padres'
 import { Route as AppMundosRouteImport } from './routes/_app/mundos'
 import { Route as AppJuegosRouteImport } from './routes/_app/juegos'
@@ -63,6 +64,11 @@ const AppRoute = AppRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiHotmartRoute = ApiHotmartRouteImport.update({
+  id: '/api/hotmart',
+  path: '/api/hotmart',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppPadresRoute = AppPadresRouteImport.update({
@@ -148,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/juegos': typeof AppJuegosRoute
   '/mundos': typeof AppMundosRouteWithChildren
   '/padres': typeof AppPadresRouteWithChildren
+  '/api/hotmart': typeof ApiHotmartRoute
   '/coloreo/$drawingSlug': typeof AppColoreoDrawingSlugRoute
   '/mundos/$worldSlug': typeof AppMundosWorldSlugRoute
   '/padres/ajustes': typeof AppPadresAjustesRoute
@@ -168,6 +175,7 @@ export interface FileRoutesByTo {
   '/galeria': typeof AppGaleriaRoute
   '/hoy': typeof AppHoyRoute
   '/juegos': typeof AppJuegosRoute
+  '/api/hotmart': typeof ApiHotmartRoute
   '/coloreo/$drawingSlug': typeof AppColoreoDrawingSlugRoute
   '/mundos/$worldSlug': typeof AppMundosWorldSlugRoute
   '/padres/ajustes': typeof AppPadresAjustesRoute
@@ -192,6 +200,7 @@ export interface FileRoutesById {
   '/_app/juegos': typeof AppJuegosRoute
   '/_app/mundos': typeof AppMundosRouteWithChildren
   '/_app/padres': typeof AppPadresRouteWithChildren
+  '/api/hotmart': typeof ApiHotmartRoute
   '/_app/coloreo/$drawingSlug': typeof AppColoreoDrawingSlugRoute
   '/_app/mundos/$worldSlug': typeof AppMundosWorldSlugRoute
   '/_app/padres/ajustes': typeof AppPadresAjustesRoute
@@ -216,6 +225,7 @@ export interface FileRouteTypes {
     | '/juegos'
     | '/mundos'
     | '/padres'
+    | '/api/hotmart'
     | '/coloreo/$drawingSlug'
     | '/mundos/$worldSlug'
     | '/padres/ajustes'
@@ -236,6 +246,7 @@ export interface FileRouteTypes {
     | '/galeria'
     | '/hoy'
     | '/juegos'
+    | '/api/hotmart'
     | '/coloreo/$drawingSlug'
     | '/mundos/$worldSlug'
     | '/padres/ajustes'
@@ -259,6 +270,7 @@ export interface FileRouteTypes {
     | '/_app/juegos'
     | '/_app/mundos'
     | '/_app/padres'
+    | '/api/hotmart'
     | '/_app/coloreo/$drawingSlug'
     | '/_app/mundos/$worldSlug'
     | '/_app/padres/ajustes'
@@ -278,6 +290,7 @@ export interface RootRouteChildren {
   OnboardingRoute: typeof OnboardingRoute
   PerfilNinoRoute: typeof PerfilNinoRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  ApiHotmartRoute: typeof ApiHotmartRoute
   ApiPublicPaymentWebhookRoute: typeof ApiPublicPaymentWebhookRoute
   ApiPublicSendEmailRoute: typeof ApiPublicSendEmailRoute
 }
@@ -331,6 +344,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/hotmart': {
+      id: '/api/hotmart'
+      path: '/api/hotmart'
+      fullPath: '/api/hotmart'
+      preLoaderRoute: typeof ApiHotmartRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app/padres': {
@@ -494,6 +514,7 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingRoute: OnboardingRoute,
   PerfilNinoRoute: PerfilNinoRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  ApiHotmartRoute: ApiHotmartRoute,
   ApiPublicPaymentWebhookRoute: ApiPublicPaymentWebhookRoute,
   ApiPublicSendEmailRoute: ApiPublicSendEmailRoute,
 }
