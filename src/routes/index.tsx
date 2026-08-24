@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ColoringCanvas, type ColoringCanvasHandle } from "@/components/coloring/ColoringCanvas";
 import { speak } from "@/lib/speech";
+import { checkoutUrl } from "@/lib/hotmart";
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
