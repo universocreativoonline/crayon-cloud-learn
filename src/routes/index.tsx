@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ColoringCanvas, type ColoringCanvasHandle } from "@/components/coloring/ColoringCanvas";
 import { speak } from "@/lib/speech";
+import { checkoutUrl } from "@/lib/hotmart";
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
@@ -77,13 +78,22 @@ const BENEFITS = [
   ["📚", "Amor por aprender", "Asocia el inglés con algo que disfruta. Aprender deja de ser una tarea y se convierte en su juego favorito."],
 ];
 
-const PLANS = [
+const PLANS: {
+  name: string;
+  price: string;
+  per: string;
+  note: string;
+  best: boolean;
+  tag?: string;
+  url: string;
+}[] = [
   {
     name: "Mensual",
     price: "4.99",
     per: "al mes",
     note: "Cancela cuando quieras.",
     best: false,
+    url: checkoutUrl("basico"),
   },
   {
     name: "Anual",
@@ -92,6 +102,7 @@ const PLANS = [
     note: "Equivale a $2.50/mes · Ahorras casi $30 al año.",
     best: true,
     tag: "Ahorra 50%",
+    url: checkoutUrl("premium"),
   },
 ];
 
@@ -430,9 +441,9 @@ function LandingPage() {
                   <li key={f} className="flex gap-2"><span className="text-secondary">✓</span> {f}</li>
                 ))}
               </ul>
-              <button type="button" className={`mt-5 block w-full rounded-2xl py-3 text-center font-display font-bold active:scale-95 ${p.best ? "bg-primary text-primary-foreground shadow-crayon" : "border border-border text-ink"}`}>
+              <a href={p.url} className={`mt-5 block w-full rounded-2xl py-3 text-center font-display font-bold active:scale-95 ${p.best ? "bg-primary text-primary-foreground shadow-crayon" : "border border-border text-ink"}`}>
                 Suscribirme
-              </button>
+              </a>
             </div>
           ))}
         </div>
