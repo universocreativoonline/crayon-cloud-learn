@@ -85,6 +85,7 @@ const PLANS = [
     per: "al mes",
     note: "Cancela cuando quieras.",
     best: false,
+    url: checkoutUrl("basico"),
   },
   {
     name: "Anual",
@@ -93,6 +94,7 @@ const PLANS = [
     note: "Equivale a $2.50/mes · Ahorras casi $30 al año.",
     best: true,
     tag: "Ahorra 50%",
+    url: checkoutUrl("premium"),
   },
 ];
 
