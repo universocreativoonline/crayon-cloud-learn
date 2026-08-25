@@ -9,46 +9,33 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as PerfilNinoRouteImport } from './routes/perfil-nino'
-import { Route as OnboardingRouteImport } from './routes/onboarding'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApiHotmartRouteImport } from './routes/api/hotmart'
-import { Route as AppPadresRouteImport } from './routes/_app/padres'
-import { Route as AppMundosRouteImport } from './routes/_app/mundos'
-import { Route as AppJuegosRouteImport } from './routes/_app/juegos'
-import { Route as AppHoyRouteImport } from './routes/_app/hoy'
+import { Route as AppRouteImport } from './routes/_app'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as PerfilNinoRouteImport } from './routes/perfil-nino'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AppGaleriaRouteImport } from './routes/_app/galeria'
-import { Route as AppPadresIndexRouteImport } from './routes/_app/padres.index'
-import { Route as AppMundosIndexRouteImport } from './routes/_app/mundos.index'
-import { Route as ApiPublicHotmartRouteImport } from './routes/api/public/hotmart'
-import { Route as AppPadresProgresoRouteImport } from './routes/_app/padres.progreso'
-import { Route as AppPadresPlanesRouteImport } from './routes/_app/padres.planes'
-import { Route as AppPadresAjustesRouteImport } from './routes/_app/padres.ajustes'
-import { Route as AppMundosWorldSlugRouteImport } from './routes/_app/mundos.$worldSlug'
+import { Route as AppHoyRouteImport } from './routes/_app/hoy'
+import { Route as AppJuegosRouteImport } from './routes/_app/juegos'
+import { Route as AppMundosRouteImport } from './routes/_app/mundos'
+import { Route as AppPadresRouteImport } from './routes/_app/padres'
 import { Route as AppColoreoDrawingSlugRouteImport } from './routes/_app/coloreo.$drawingSlug'
+import { Route as AppMundosIndexRouteImport } from './routes/_app/mundos.index'
+import { Route as AppMundosWorldSlugRouteImport } from './routes/_app/mundos.$worldSlug'
+import { Route as AppPadresIndexRouteImport } from './routes/_app/padres.index'
+import { Route as AppPadresAjustesRouteImport } from './routes/_app/padres.ajustes'
+import { Route as AppPadresPlanesRouteImport } from './routes/_app/padres.planes'
+import { Route as AppPadresProgresoRouteImport } from './routes/_app/padres.progreso'
 
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PerfilNinoRoute = PerfilNinoRouteImport.update({
-  id: '/perfil-nino',
-  path: '/perfil-nino',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OnboardingRoute = OnboardingRouteImport.update({
-  id: '/onboarding',
-  path: '/onboarding',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -56,33 +43,29 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppRoute = AppRouteImport.update({
-  id: '/_app',
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiHotmartRoute = ApiHotmartRouteImport.update({
-  id: '/api/hotmart',
-  path: '/api/hotmart',
+const PerfilNinoRoute = PerfilNinoRouteImport.update({
+  id: '/perfil-nino',
+  path: '/perfil-nino',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppPadresRoute = AppPadresRouteImport.update({
-  id: '/padres',
-  path: '/padres',
-  getParentRoute: () => AppRoute,
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AppMundosRoute = AppMundosRouteImport.update({
-  id: '/mundos',
-  path: '/mundos',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppJuegosRoute = AppJuegosRouteImport.update({
-  id: '/juegos',
-  path: '/juegos',
+const AppGaleriaRoute = AppGaleriaRouteImport.update({
+  id: '/galeria',
+  path: '/galeria',
   getParentRoute: () => AppRoute,
 } as any)
 const AppHoyRoute = AppHoyRouteImport.update({
@@ -90,34 +73,39 @@ const AppHoyRoute = AppHoyRouteImport.update({
   path: '/hoy',
   getParentRoute: () => AppRoute,
 } as any)
-const AppGaleriaRoute = AppGaleriaRouteImport.update({
-  id: '/galeria',
-  path: '/galeria',
+const AppJuegosRoute = AppJuegosRouteImport.update({
+  id: '/juegos',
+  path: '/juegos',
   getParentRoute: () => AppRoute,
 } as any)
-const AppPadresIndexRoute = AppPadresIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AppPadresRoute,
+const AppMundosRoute = AppMundosRouteImport.update({
+  id: '/mundos',
+  path: '/mundos',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPadresRoute = AppPadresRouteImport.update({
+  id: '/padres',
+  path: '/padres',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppColoreoDrawingSlugRoute = AppColoreoDrawingSlugRouteImport.update({
+  id: '/coloreo/$drawingSlug',
+  path: '/coloreo/$drawingSlug',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppMundosIndexRoute = AppMundosIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AppMundosRoute,
 } as any)
-const ApiPublicHotmartRoute = ApiPublicHotmartRouteImport.update({
-  id: '/api/public/hotmart',
-  path: '/api/public/hotmart',
-  getParentRoute: () => rootRouteImport,
+const AppMundosWorldSlugRoute = AppMundosWorldSlugRouteImport.update({
+  id: '/$worldSlug',
+  path: '/$worldSlug',
+  getParentRoute: () => AppMundosRoute,
 } as any)
-const AppPadresProgresoRoute = AppPadresProgresoRouteImport.update({
-  id: '/progreso',
-  path: '/progreso',
-  getParentRoute: () => AppPadresRoute,
-} as any)
-const AppPadresPlanesRoute = AppPadresPlanesRouteImport.update({
-  id: '/planes',
-  path: '/planes',
+const AppPadresIndexRoute = AppPadresIndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => AppPadresRoute,
 } as any)
 const AppPadresAjustesRoute = AppPadresAjustesRouteImport.update({
@@ -125,15 +113,15 @@ const AppPadresAjustesRoute = AppPadresAjustesRouteImport.update({
   path: '/ajustes',
   getParentRoute: () => AppPadresRoute,
 } as any)
-const AppMundosWorldSlugRoute = AppMundosWorldSlugRouteImport.update({
-  id: '/$worldSlug',
-  path: '/$worldSlug',
-  getParentRoute: () => AppMundosRoute,
+const AppPadresPlanesRoute = AppPadresPlanesRouteImport.update({
+  id: '/planes',
+  path: '/planes',
+  getParentRoute: () => AppPadresRoute,
 } as any)
-const AppColoreoDrawingSlugRoute = AppColoreoDrawingSlugRouteImport.update({
-  id: '/coloreo/$drawingSlug',
-  path: '/coloreo/$drawingSlug',
-  getParentRoute: () => AppRoute,
+const AppPadresProgresoRoute = AppPadresProgresoRouteImport.update({
+  id: '/progreso',
+  path: '/progreso',
+  getParentRoute: () => AppPadresRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -148,13 +136,11 @@ export interface FileRoutesByFullPath {
   '/juegos': typeof AppJuegosRoute
   '/mundos': typeof AppMundosRouteWithChildren
   '/padres': typeof AppPadresRouteWithChildren
-  '/api/hotmart': typeof ApiHotmartRoute
   '/coloreo/$drawingSlug': typeof AppColoreoDrawingSlugRoute
   '/mundos/$worldSlug': typeof AppMundosWorldSlugRoute
   '/padres/ajustes': typeof AppPadresAjustesRoute
   '/padres/planes': typeof AppPadresPlanesRoute
   '/padres/progreso': typeof AppPadresProgresoRoute
-  '/api/public/hotmart': typeof ApiPublicHotmartRoute
   '/mundos/': typeof AppMundosIndexRoute
   '/padres/': typeof AppPadresIndexRoute
 }
@@ -168,13 +154,11 @@ export interface FileRoutesByTo {
   '/galeria': typeof AppGaleriaRoute
   '/hoy': typeof AppHoyRoute
   '/juegos': typeof AppJuegosRoute
-  '/api/hotmart': typeof ApiHotmartRoute
   '/coloreo/$drawingSlug': typeof AppColoreoDrawingSlugRoute
   '/mundos/$worldSlug': typeof AppMundosWorldSlugRoute
   '/padres/ajustes': typeof AppPadresAjustesRoute
   '/padres/planes': typeof AppPadresPlanesRoute
   '/padres/progreso': typeof AppPadresProgresoRoute
-  '/api/public/hotmart': typeof ApiPublicHotmartRoute
   '/mundos': typeof AppMundosIndexRoute
   '/padres': typeof AppPadresIndexRoute
 }
@@ -192,13 +176,11 @@ export interface FileRoutesById {
   '/_app/juegos': typeof AppJuegosRoute
   '/_app/mundos': typeof AppMundosRouteWithChildren
   '/_app/padres': typeof AppPadresRouteWithChildren
-  '/api/hotmart': typeof ApiHotmartRoute
   '/_app/coloreo/$drawingSlug': typeof AppColoreoDrawingSlugRoute
   '/_app/mundos/$worldSlug': typeof AppMundosWorldSlugRoute
   '/_app/padres/ajustes': typeof AppPadresAjustesRoute
   '/_app/padres/planes': typeof AppPadresPlanesRoute
   '/_app/padres/progreso': typeof AppPadresProgresoRoute
-  '/api/public/hotmart': typeof ApiPublicHotmartRoute
   '/_app/mundos/': typeof AppMundosIndexRoute
   '/_app/padres/': typeof AppPadresIndexRoute
 }
@@ -216,13 +198,11 @@ export interface FileRouteTypes {
     | '/juegos'
     | '/mundos'
     | '/padres'
-    | '/api/hotmart'
     | '/coloreo/$drawingSlug'
     | '/mundos/$worldSlug'
     | '/padres/ajustes'
     | '/padres/planes'
     | '/padres/progreso'
-    | '/api/public/hotmart'
     | '/mundos/'
     | '/padres/'
   fileRoutesByTo: FileRoutesByTo
@@ -236,13 +216,11 @@ export interface FileRouteTypes {
     | '/galeria'
     | '/hoy'
     | '/juegos'
-    | '/api/hotmart'
     | '/coloreo/$drawingSlug'
     | '/mundos/$worldSlug'
     | '/padres/ajustes'
     | '/padres/planes'
     | '/padres/progreso'
-    | '/api/public/hotmart'
     | '/mundos'
     | '/padres'
   id:
@@ -259,13 +237,11 @@ export interface FileRouteTypes {
     | '/_app/juegos'
     | '/_app/mundos'
     | '/_app/padres'
-    | '/api/hotmart'
     | '/_app/coloreo/$drawingSlug'
     | '/_app/mundos/$worldSlug'
     | '/_app/padres/ajustes'
     | '/_app/padres/planes'
     | '/_app/padres/progreso'
-    | '/api/public/hotmart'
     | '/_app/mundos/'
     | '/_app/padres/'
   fileRoutesById: FileRoutesById
@@ -278,45 +254,15 @@ export interface RootRouteChildren {
   OnboardingRoute: typeof OnboardingRoute
   PerfilNinoRoute: typeof PerfilNinoRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
-  ApiHotmartRoute: typeof ApiHotmartRoute
-  ApiPublicHotmartRoute: typeof ApiPublicHotmartRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/perfil-nino': {
-      id: '/perfil-nino'
-      path: '/perfil-nino'
-      fullPath: '/perfil-nino'
-      preLoaderRoute: typeof PerfilNinoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/onboarding': {
-      id: '/onboarding'
-      path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof OnboardingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app': {
@@ -326,39 +272,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/hotmart': {
-      id: '/api/hotmart'
-      path: '/api/hotmart'
-      fullPath: '/api/hotmart'
-      preLoaderRoute: typeof ApiHotmartRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/padres': {
-      id: '/_app/padres'
-      path: '/padres'
-      fullPath: '/padres'
-      preLoaderRoute: typeof AppPadresRouteImport
-      parentRoute: typeof AppRoute
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_app/mundos': {
-      id: '/_app/mundos'
-      path: '/mundos'
-      fullPath: '/mundos'
-      preLoaderRoute: typeof AppMundosRouteImport
-      parentRoute: typeof AppRoute
+    '/perfil-nino': {
+      id: '/perfil-nino'
+      path: '/perfil-nino'
+      fullPath: '/perfil-nino'
+      preLoaderRoute: typeof PerfilNinoRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_app/juegos': {
-      id: '/_app/juegos'
-      path: '/juegos'
-      fullPath: '/juegos'
-      preLoaderRoute: typeof AppJuegosRouteImport
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app/galeria': {
+      id: '/_app/galeria'
+      path: '/galeria'
+      fullPath: '/galeria'
+      preLoaderRoute: typeof AppGaleriaRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/hoy': {
@@ -368,19 +321,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppHoyRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/galeria': {
-      id: '/_app/galeria'
-      path: '/galeria'
-      fullPath: '/galeria'
-      preLoaderRoute: typeof AppGaleriaRouteImport
+    '/_app/juegos': {
+      id: '/_app/juegos'
+      path: '/juegos'
+      fullPath: '/juegos'
+      preLoaderRoute: typeof AppJuegosRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/padres/': {
-      id: '/_app/padres/'
-      path: '/'
-      fullPath: '/padres/'
-      preLoaderRoute: typeof AppPadresIndexRouteImport
-      parentRoute: typeof AppPadresRoute
+    '/_app/mundos': {
+      id: '/_app/mundos'
+      path: '/mundos'
+      fullPath: '/mundos'
+      preLoaderRoute: typeof AppMundosRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/padres': {
+      id: '/_app/padres'
+      path: '/padres'
+      fullPath: '/padres'
+      preLoaderRoute: typeof AppPadresRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/coloreo/$drawingSlug': {
+      id: '/_app/coloreo/$drawingSlug'
+      path: '/coloreo/$drawingSlug'
+      fullPath: '/coloreo/$drawingSlug'
+      preLoaderRoute: typeof AppColoreoDrawingSlugRouteImport
+      parentRoute: typeof AppRoute
     }
     '/_app/mundos/': {
       id: '/_app/mundos/'
@@ -389,25 +356,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppMundosIndexRouteImport
       parentRoute: typeof AppMundosRoute
     }
-    '/api/public/hotmart': {
-      id: '/api/public/hotmart'
-      path: '/api/public/hotmart'
-      fullPath: '/api/public/hotmart'
-      preLoaderRoute: typeof ApiPublicHotmartRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_app/mundos/$worldSlug': {
+      id: '/_app/mundos/$worldSlug'
+      path: '/$worldSlug'
+      fullPath: '/mundos/$worldSlug'
+      preLoaderRoute: typeof AppMundosWorldSlugRouteImport
+      parentRoute: typeof AppMundosRoute
     }
-    '/_app/padres/progreso': {
-      id: '/_app/padres/progreso'
-      path: '/progreso'
-      fullPath: '/padres/progreso'
-      preLoaderRoute: typeof AppPadresProgresoRouteImport
-      parentRoute: typeof AppPadresRoute
-    }
-    '/_app/padres/planes': {
-      id: '/_app/padres/planes'
-      path: '/planes'
-      fullPath: '/padres/planes'
-      preLoaderRoute: typeof AppPadresPlanesRouteImport
+    '/_app/padres/': {
+      id: '/_app/padres/'
+      path: '/'
+      fullPath: '/padres/'
+      preLoaderRoute: typeof AppPadresIndexRouteImport
       parentRoute: typeof AppPadresRoute
     }
     '/_app/padres/ajustes': {
@@ -417,19 +377,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPadresAjustesRouteImport
       parentRoute: typeof AppPadresRoute
     }
-    '/_app/mundos/$worldSlug': {
-      id: '/_app/mundos/$worldSlug'
-      path: '/$worldSlug'
-      fullPath: '/mundos/$worldSlug'
-      preLoaderRoute: typeof AppMundosWorldSlugRouteImport
-      parentRoute: typeof AppMundosRoute
+    '/_app/padres/planes': {
+      id: '/_app/padres/planes'
+      path: '/planes'
+      fullPath: '/padres/planes'
+      preLoaderRoute: typeof AppPadresPlanesRouteImport
+      parentRoute: typeof AppPadresRoute
     }
-    '/_app/coloreo/$drawingSlug': {
-      id: '/_app/coloreo/$drawingSlug'
-      path: '/coloreo/$drawingSlug'
-      fullPath: '/coloreo/$drawingSlug'
-      preLoaderRoute: typeof AppColoreoDrawingSlugRouteImport
-      parentRoute: typeof AppRoute
+    '/_app/padres/progreso': {
+      id: '/_app/padres/progreso'
+      path: '/progreso'
+      fullPath: '/padres/progreso'
+      preLoaderRoute: typeof AppPadresProgresoRouteImport
+      parentRoute: typeof AppPadresRoute
     }
   }
 }
@@ -494,8 +454,6 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingRoute: OnboardingRoute,
   PerfilNinoRoute: PerfilNinoRoute,
   ResetPasswordRoute: ResetPasswordRoute,
-  ApiHotmartRoute: ApiHotmartRoute,
-  ApiPublicHotmartRoute: ApiPublicHotmartRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
