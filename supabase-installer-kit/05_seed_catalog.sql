@@ -5,15 +5,15 @@
 -- ============================================================================
 
 -- ---------- planes (los dos activos dan acceso completo; cambia la facturación)
-insert into public.plans (code, name, price_usd, billing_interval, months, is_best_value, sort_order, is_active) values
-  ('basico','Mensual',4.99,'mensual',1,false,1,true),
-  ('premium','Anual',29.99,'anual',12,true,2,true),
-  ('pro','Pro Semestral',9.00,'semestral',6,false,2,false)
+insert into public.plans (code, name, price_usd, billing_interval, months, is_best_value, sort_order, is_active, hotmart_offer_code) values
+  ('basico','Mensual',4.99,'mensual',1,false,1,true,'t5z829tk'),
+  ('premium','Anual',29.99,'anual',12,true,2,true,'1yo6anl1'),
+  ('pro','Pro Semestral',9.00,'semestral',6,false,2,false,null)
 on conflict (code) do update set
   name = excluded.name, price_usd = excluded.price_usd,
   billing_interval = excluded.billing_interval, months = excluded.months,
   is_best_value = excluded.is_best_value, sort_order = excluded.sort_order,
-  is_active = excluded.is_active;
+  is_active = excluded.is_active, hotmart_offer_code = excluded.hotmart_offer_code;
 
 -- ---------- paleta: 24 colores con nombre y pronunciación ----------
 delete from public.palette_colors;

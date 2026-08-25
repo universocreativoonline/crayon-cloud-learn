@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { fetchPlans } from "@/lib/queries";
+import { checkoutUrl } from "@/lib/hotmart";
 import { fetchMyRole, isAdminRole } from "@/lib/admin";
 import { supabase } from "@/integrations/supabase/client";
 import { useTheme, type Theme } from "@/lib/theme-provider";
@@ -91,13 +92,12 @@ function ParentPanel() {
                   <li>✓ Los 33 mundos</li>
                   <li>✓ Sin anuncios</li>
                 </ul>
-                <button
-                  disabled
-                  className="mt-4 w-full cursor-not-allowed rounded-2xl bg-muted py-2.5 font-display text-sm font-bold text-ink-soft"
-                  title="La pasarela de pago se conecta próximamente"
+                <a
+                  href={checkoutUrl(p.code)}
+                  className="mt-4 block w-full rounded-2xl bg-primary py-2.5 text-center font-display text-sm font-bold text-primary-foreground shadow-crayon active:scale-95"
                 >
-                  Próximamente
-                </button>
+                  Suscribirme
+                </a>
               </div>
             );
           })}
