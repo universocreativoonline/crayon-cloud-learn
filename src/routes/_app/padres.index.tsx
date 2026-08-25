@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { fetchPlans } from "@/lib/queries";
+import { checkoutUrl } from "@/lib/hotmart";
 import { fetchMyRole, isAdminRole } from "@/lib/admin";
 import { supabase } from "@/integrations/supabase/client";
 import { useTheme, type Theme } from "@/lib/theme-provider";
