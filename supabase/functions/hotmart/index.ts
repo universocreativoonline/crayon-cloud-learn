@@ -106,7 +106,7 @@ const BRAND = {
   paper: "#FFF6EE", card: "#FFFFFF", border: "#F0E2D4", ink: "#2A2118",
   muted: "#7A6A5C", info: "#F7EFE6", orange: "#FF7A3D", turquoise: "#17B8B0", red: "#E63946",
 };
-const APP = (Deno.env.get("APP_URL") || "https://pinturitas.app").replace(/\/+$/, "");
+const APP = (Deno.env.get("APP_URL") || "https://pinturita.lovable.app").replace(/\/+$/, "");
 const appUrl = (p = "") => (p ? `${APP}/${p.replace(/^\/+/, "")}` : APP);
 const esc = (v: string) => String(v ?? "").replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]!));
 
