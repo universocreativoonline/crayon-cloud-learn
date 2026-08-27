@@ -58,6 +58,18 @@ grant select, update on public.profiles to authenticated;
 grant select, insert, update, delete on public.subscriptions to authenticated;
 grant select, insert, update, delete on public.user_roles to authenticated;
 
+-- service_role es el rol de backend (solo server-side con la clave secreta): lo
+-- usan el cliente admin y las edge functions (p. ej. el webhook de Hotmart) para
+-- leer/escribir sin RLS. Normalmente Supabase le concede todo por defecto, pero
+-- si ese default no está activo, sin estos GRANT el webhook falla con
+-- "permission denied" al tocar profiles/plans/subscriptions/email_log.
+grant all on all tables in schema public to service_role;
+grant all on all sequences in schema public to service_role;
+grant all on all routines in schema public to service_role;
+alter default privileges in schema public grant all on tables to service_role;
+alter default privileges in schema public grant all on sequences to service_role;
+alter default privileges in schema public grant all on routines to service_role;
+
 grant execute on function public.owns_child(uuid) to authenticated;
 grant execute on function public.has_role(uuid, public.app_role) to authenticated;
 grant execute on function public.is_admin(uuid) to authenticated;

@@ -219,8 +219,12 @@ async function sendEmail(supabase: any, event: string, to: string, userId: strin
   const email = builder(vars);
   const template_code = `hotmart_${event.toLowerCase()}`;
 
-  const log = (status: string, provider_message_id: string | null, error: string | null) =>
-    supabase.from("email_log").insert({ user_id: userId, template_code, to_email: to, status, provider_message_id, error });
+  const log = async (status: string, provider_message_id: string | null, error: string | null) => {
+    const { error: logErr } = await supabase
+      .from("email_log")
+      .insert({ user_id: userId, template_code, to_email: to, status, provider_message_id, error });
+    if (logErr) console.error("[hotmart] no se pudo escribir email_log:", logErr.message ?? logErr);
+  };
 
   if (!apiKey) {
     await log("error", null, "Falta RESEND_API_KEY");
@@ -289,12 +293,14 @@ Deno.serve(async (req) => {
       return json({ ok: false, error: "no se pudo registrar el evento" }, 500);
     }
 
-    // 3. Usuario + plan
-    const { data: profile } = await supabase
+    // 3. Usuario + plan (registramos errores en vez de tragarlos en silencio)
+    const { data: profile, error: profileErr } = await supabase
       .from("profiles").select("id, display_name, email").eq("email", p.buyerEmail).maybeSingle();
-    const { data: plan } = p.offerCode
+    if (profileErr) console.error("[hotmart] error leyendo profiles:", profileErr.message ?? profileErr);
+    const { data: plan, error: planErr } = p.offerCode
       ? await supabase.from("plans").select("id, name, months, price_usd").eq("hotmart_offer_code", p.offerCode).maybeSingle()
-      : { data: null as any };
+      : { data: null as any, error: null };
+    if (planErr) console.error("[hotmart] error leyendo plans:", planErr.message ?? planErr);
 
     const effect = eventToEffect(p.event);
     let subscriptionId: string | null = null;
