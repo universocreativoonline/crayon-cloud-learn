@@ -123,6 +123,7 @@ function renderBrandedEmail(e: BrandedEmail): string {
   const cta = e.ctaLabel && e.ctaUrl
     ? `<p style="text-align:center;"><a class="cta" href="${esc(e.ctaUrl)}">${esc(e.ctaLabel)}</a></p>` : "";
   const foot = e.footNote || "Puedes gestionar tu suscripción desde la Zona de Padres.";
+  const support = `¿Tienes dudas? Escríbenos a <a href="mailto:soporte.descubredesdecasa@gmail.com" style="color:${BRAND.muted};">soporte.descubredesdecasa@gmail.com</a>`;
   return `<!doctype html>
 <html lang="es"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>${esc(e.subject)}</title>
@@ -142,7 +143,7 @@ function renderBrandedEmail(e: BrandedEmail): string {
         ${info}
         ${cta}
         <p>Un abrazo,<br/>El equipo de Pinturitas</p></div>
-<p class="foot">${esc(foot)}</p></div></body></html>`;
+<p class="foot">${esc(foot)}<br/>${support}</p></div></body></html>`;
 }
 
 type Vars = { display_name?: string; plan_name?: string; renews_at?: string; amount?: string; charge_date?: string };
