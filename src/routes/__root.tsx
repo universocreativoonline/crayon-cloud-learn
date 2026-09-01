@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -14,6 +15,8 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ThemeProvider } from "../lib/theme-provider";
 import { ChildProvider } from "../lib/child-context";
 import { registerPwa } from "../lib/pwa-register";
+import { I18nProvider } from "../lib/i18n";
+import { LanguageSelector } from "../components/LanguageSelector";
 
 function NotFoundComponent() {
   return (
@@ -148,6 +151,10 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  // La landing (/) trae su propio selector dentro del nav; en el resto de la app
+  // se muestra fijo arriba a la derecha.
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const showFloatingSelector = pathname !== "/";
 
   useEffect(() => {
     void registerPwa();
@@ -155,12 +162,19 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <ChildProvider>
-          {/* IMPORTANTE: no eliminar <Outlet />, aquí se renderizan todas las rutas. */}
-          <Outlet />
-        </ChildProvider>
-      </ThemeProvider>
+      <I18nProvider>
+        <ThemeProvider>
+          <ChildProvider>
+            {showFloatingSelector && (
+              <div className="fixed right-3 top-3 z-[60] safe-top">
+                <LanguageSelector />
+              </div>
+            )}
+            {/* IMPORTANTE: no eliminar <Outlet />, aquí se renderizan todas las rutas. */}
+            <Outlet />
+          </ChildProvider>
+        </ThemeProvider>
+      </I18nProvider>
     </QueryClientProvider>
   );
 }

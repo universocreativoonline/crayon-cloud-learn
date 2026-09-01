@@ -4,6 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { ColoringCanvas, type ColoringCanvasHandle } from "@/components/coloring/ColoringCanvas";
 import { speak } from "@/lib/speech";
 import { checkoutUrl } from "@/lib/hotmart";
+import { useI18n } from "@/lib/i18n";
+import { LanguageSelector } from "@/components/LanguageSelector";
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
@@ -25,116 +27,55 @@ export const Route = createFileRoute("/")({
   }),
 });
 
-/* ---------- datos estáticos (página pública, sin auth) ---------- */
-
-const WORLDS = [
-  { slug: "pets", name: "Mis Mascotas" },
-  { slug: "farm", name: "La Granja" },
-  { slug: "wild", name: "Animales Salvajes" },
-  { slug: "forest", name: "El Bosque" },
-  { slug: "ocean", name: "El Océano" },
-  { slug: "flying", name: "Los que Vuelan" },
-  { slug: "bugs", name: "Bichitos" },
-  { slug: "dinosaurs", name: "Dinosaurios" },
-  { slug: "vehicles", name: "Vehículos" },
-  { slug: "space", name: "El Espacio" },
-  { slug: "princesses-castle", name: "Princesas y Castillos" },
-  { slug: "food", name: "Comida Rica" },
-  { slug: "sports", name: "Deportes" },
-  { slug: "jobs", name: "Profesiones" },
-  { slug: "instruments", name: "Instrumentos" },
-  { slug: "beach", name: "La Playa" },
-  { slug: "holidays", name: "Fiestas" },
-  { slug: "fruits", name: "Frutas" },
-  { slug: "vegetables", name: "Verduras" },
-  { slug: "family", name: "La Familia" },
-  { slug: "body", name: "El Cuerpo" },
-  { slug: "clothes", name: "La Ropa" },
-  { slug: "colors", name: "Colores" },
-  { slug: "shapes", name: "Formas" },
-  { slug: "numbers", name: "Números" },
-  { slug: "home", name: "La Casa" },
-  { slug: "kitchen", name: "La Cocina" },
-  { slug: "toys", name: "Juguetes" },
-  { slug: "school", name: "La Escuela" },
-  { slug: "nature", name: "Naturaleza" },
-  { slug: "weather", name: "El Clima" },
-  { slug: "city", name: "En la Ciudad" },
-  { slug: "tools", name: "Herramientas" },
-];
-
-const STEPS = [
-  { n: "1", title: "Elige un dibujo", body: "Más de 630 láminas en 33 mundos: animales, números, colores, el cuerpo, la comida y mucho más.", img: "/line-art/pets/dog.png" },
-  { n: "2", title: "Coloréalo con el dedo", body: "El color nunca se sale de la línea. Toca una zona y se llena, o pinta libre. Cero frustración.", img: "/landing/dog-color.png" },
-  { n: "3", title: "Aprende la palabra", body: "Al colorear, escucha el nombre en inglés y en español. Aprende sin darse cuenta.", img: null },
-];
-
-const BENEFITS = [
-  ["🗣️", "Sus primeras palabras en inglés", "Nombra animales, colores y objetos en inglés desde pequeño, sin traducir ni memorizar de memoria."],
-  ["✍️", "Una mano lista para escribir", "Colorear fortalece la motricidad fina y la coordinación ojo-mano que necesitará para tomar el lápiz."],
-  ["🎯", "Más concentración", "Sesiones cortas y absorbentes que entrenan su atención, sin sobreestimularlo con ruido y pantallas rápidas."],
-  ["🎨", "Creatividad y expresión", "Elige colores, decide, crea. Un espacio tranquilo donde no existen las respuestas incorrectas."],
-  ["💛", "Confianza en sí mismo", "Cada dibujo terminado es un logro suyo. Lo completa, lo guarda en su galería y se siente orgulloso."],
-  ["📚", "Amor por aprender", "Asocia el inglés con algo que disfruta. Aprender deja de ser una tarea y se convierte en su juego favorito."],
-];
-
-const PLANS: {
-  name: string;
-  price: string;
-  per: string;
-  note: string;
-  best: boolean;
-  tag?: string;
-  url: string;
-}[] = [
-  {
-    name: "Mensual",
-    price: "4.99",
-    per: "al mes",
-    note: "Cancela cuando quieras.",
-    best: false,
-    url: checkoutUrl("basico"),
-  },
-  {
-    name: "Anual",
-    price: "29.99",
-    per: "al año",
-    note: "Equivale a $2.50/mes · Ahorras casi $30 al año.",
-    best: true,
-    tag: "Ahorra 50%",
-    url: checkoutUrl("premium"),
-  },
-];
-
-const PLAN_FEATURES = [
-  "Los 33 mundos completos (630+ láminas)",
-  "Cada palabra con audio en inglés y español",
-  "Los juegos de vocabulario",
-  "Galería con todas sus obras",
-  "Hasta 4 perfiles de niño",
-  "Panel de progreso para papás",
-  "Mundos nuevos cada mes",
-  "Sin anuncios ni enlaces externos",
-];
-
-const FAQS = [
-  { q: "¿Para qué edad es?", a: "Para niños de 3 a 7 años. No necesita saber leer ni tener conocimientos previos de inglés." },
-  { q: "¿Yo necesito saber inglés?", a: "No. Cada palabra se pronuncia sola dentro de la app, en inglés y en español, con la pronunciación escrita para que tu hijo también la diga." },
-  { q: "¿De verdad aprende o solo se entretiene?", a: "Aprende jugando. Al colorear escucha y repite la palabra, la asocia a la imagen y al color. Es la forma más natural de adquirir vocabulario a esta edad — y tú ves su avance en el panel de padres." },
-  { q: "¿Tiene anuncios o compras dentro del juego?", a: "No. No hay publicidad ni enlaces externos en la zona del niño. Los pagos viven detrás de una puerta para adultos." },
-  { q: "¿Puedo cancelar cuando quiera?", a: "Sí. Cancelas cuando quieras desde la zona de padres, sin permanencia ni penalizaciones. Mantienes el acceso hasta que termine el periodo que ya pagaste." },
-  { q: "¿Funciona sin internet?", a: "Los mundos que ya visitaste quedan disponibles sin conexión, y lo que pinta se guarda al recuperar la señal." },
-  { q: "¿Puedo tener varios hijos en una cuenta?", a: "Sí, hasta 4 perfiles, cada uno con su propio progreso y galería." },
+/** Slugs de los 33 mundos; el nombre visible sale de las traducciones. */
+const WORLD_SLUGS = [
+  "pets", "farm", "wild", "forest", "ocean", "flying", "bugs", "dinosaurs", "vehicles",
+  "space", "princesses-castle", "food", "sports", "jobs", "instruments", "beach", "holidays",
+  "fruits", "vegetables", "family", "body", "clothes", "colors", "shapes", "numbers", "home",
+  "kitchen", "toys", "school", "nature", "weather", "city", "tools",
 ];
 
 /* ---------- página ---------- */
 
 function LandingPage() {
+  const { t, locale } = useI18n();
   const [authed, setAuthed] = useState(false);
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setAuthed(!!data.session));
   }, []);
-  const appLabel = authed ? "Ir a mi app" : "Entrar";
+  const appLabel = authed ? t("nav.goApp") : t("nav.enter");
+
+  const steps = [
+    { n: "1", title: t("how.s1t"), body: t("how.s1b"), img: "/line-art/pets/dog.png" },
+    { n: "2", title: t("how.s2t"), body: t("how.s2b"), img: "/landing/dog-color.png" },
+    { n: "3", title: t("how.s3t"), body: t("how.s3b"), img: null as string | null },
+  ];
+
+  const benefits: [string, string, string][] = [
+    ["🗣️", t("benefits.b1t"), t("benefits.b1b")],
+    ["✍️", t("benefits.b2t"), t("benefits.b2b")],
+    ["🎯", t("benefits.b3t"), t("benefits.b3b")],
+    ["🎨", t("benefits.b4t"), t("benefits.b4b")],
+    ["💛", t("benefits.b5t"), t("benefits.b5b")],
+    ["📚", t("benefits.b6t"), t("benefits.b6b")],
+  ];
+
+  const plans = [
+    { code: "basico", name: t("plans.monthly"), price: "4.99", per: t("plans.perMonth"), note: t("plans.monthlyNote"), best: false, tag: undefined as string | undefined, url: checkoutUrl("basico", locale) },
+    { code: "premium", name: t("plans.yearly"), price: "29.99", per: t("plans.perYear"), note: t("plans.yearlyNote"), best: true, tag: t("plans.yearlyTag"), url: checkoutUrl("premium", locale) },
+  ];
+
+  const planFeatures = [t("plans.f1"), t("plans.f2"), t("plans.f3"), t("plans.f4"), t("plans.f5"), t("plans.f6"), t("plans.f7"), t("plans.f8")];
+
+  const faqs = [
+    { q: t("faq.q1"), a: t("faq.a1") },
+    { q: t("faq.q2"), a: t("faq.a2") },
+    { q: t("faq.q3"), a: t("faq.a3") },
+    { q: t("faq.q4"), a: t("faq.a4") },
+    { q: t("faq.q5"), a: t("faq.a5") },
+    { q: t("faq.q6"), a: t("faq.a6") },
+    { q: t("faq.q7"), a: t("faq.a7") },
+  ];
 
   return (
     <div className="min-h-screen bg-paper text-ink">
@@ -146,11 +87,12 @@ function LandingPage() {
             <span className="font-display text-xl font-bold text-primary">Pinturitas</span>
           </div>
           <div className="flex items-center gap-2">
-            <Link to="/auth" className="rounded-full px-4 py-2 font-display text-sm font-bold text-ink-soft hover:text-ink">
+            <LanguageSelector />
+            <Link to="/auth" className="rounded-full px-3 py-2 font-display text-sm font-bold text-ink-soft hover:text-ink sm:px-4">
               {appLabel}
             </Link>
-            <a href="#planes" className="rounded-full bg-primary px-5 py-2.5 font-display text-sm font-bold text-primary-foreground shadow-crayon active:scale-95">
-              Suscribirme
+            <a href="#planes" className="rounded-full bg-primary px-4 py-2.5 font-display text-sm font-bold text-primary-foreground shadow-crayon active:scale-95 sm:px-5">
+              {t("nav.subscribe")}
             </a>
           </div>
         </nav>
@@ -161,27 +103,23 @@ function LandingPage() {
         <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-14 md:grid-cols-2 md:py-20">
           <div>
             <span className="inline-block rounded-full bg-secondary/15 px-3 py-1 font-display text-xs font-bold text-secondary">
-              Para niños de 3 a 7 años
+              {t("hero.badge")}
             </span>
             <h1 className="mt-4 font-display text-4xl font-bold leading-[1.05] text-ink sm:text-5xl">
-              Aprender inglés nunca fue tan <span className="text-primary">divertido</span>
+              {t("hero.titleA")} <span className="text-primary">{t("hero.titleHi")}</span>
             </h1>
-            <p className="mt-4 max-w-md text-lg text-ink-soft">
-              Tu hijo aprende inglés <strong className="text-ink">dibujando</strong> con el dedo: escucha cada palabra
-              y la repite jugando. <strong className="text-ink">Fácil y sin frustraciones</strong> — querrá volver a
-              aprender todos los días. Una ventaja que le durará toda la vida.
-            </p>
+            <p className="mt-4 max-w-md text-lg text-ink-soft">{t("hero.desc")}</p>
             <div className="mt-7 flex flex-wrap items-center gap-3">
               <a href="#planes" className="rounded-2xl bg-primary px-7 py-4 font-display text-lg font-bold text-primary-foreground shadow-crayon active:scale-95">
-                Ver los planes
+                {t("hero.ctaPlans")}
               </a>
               <a href="#beneficios" className="rounded-2xl border border-border px-6 py-4 font-display font-bold text-ink hover:bg-surface">
-                ¿Por qué funciona?
+                {t("hero.ctaWhy")}
               </a>
             </div>
             <p className="mt-3 text-sm text-ink-soft">
-              Acceso completo para toda la familia ·{" "}
-              <Link to="/auth" className="font-semibold text-primary">¿Ya tienes cuenta? Entra</Link>
+              {t("hero.family")} ·{" "}
+              <Link to="/auth" className="font-semibold text-primary">{t("hero.haveAccount")}</Link>
             </p>
           </div>
 
@@ -201,7 +139,7 @@ function LandingPage() {
       {/* TRUST BAR */}
       <section className="border-y border-border bg-surface">
         <div className="mx-auto grid max-w-4xl grid-cols-3 gap-4 px-4 py-6 text-center">
-          {[["33", "mundos"], ["+630", "dibujos"], ["+600", "palabras en inglés"]].map(([n, l]) => (
+          {[["33", t("trust.worlds")], ["+630", t("trust.drawings")], ["+600", t("trust.words")]].map(([n, l]) => (
             <div key={l}>
               <div className="font-display text-3xl font-bold text-primary">{n}</div>
               <div className="text-sm text-ink-soft">{l}</div>
@@ -210,29 +148,21 @@ function LandingPage() {
         </div>
       </section>
 
-      {/* LA VENTANA DE ORO (por qué el inglés temprano) */}
+      {/* LA VENTANA DE ORO */}
       <section id="beneficios" className="mx-auto max-w-4xl px-4 py-16 text-center">
-        <span className="font-display text-sm font-bold uppercase tracking-wide text-secondary">La ventana de oro</span>
-        <h2 className="mt-2 font-display text-3xl font-bold text-ink sm:text-4xl">
-          Los primeros años no se repiten
-        </h2>
-        <p className="mt-4 text-lg text-ink-soft">
-          Entre los 3 y los 7 años, el cerebro de tu hijo vive su etapa más receptiva para los idiomas: absorbe
-          sonidos y palabras con una naturalidad que después cuesta mucho más lograr. Pinturitas aprovecha justo
-          esa ventana — y lo hace <strong className="text-ink">jugando</strong>, cuando su curiosidad está más despierta.
-        </p>
-        <p className="mt-3 font-display text-xl font-bold text-primary">
-          Empezar hoy es regalarle años de ventaja.
-        </p>
+        <span className="font-display text-sm font-bold uppercase tracking-wide text-secondary">{t("golden.kicker")}</span>
+        <h2 className="mt-2 font-display text-3xl font-bold text-ink sm:text-4xl">{t("golden.title")}</h2>
+        <p className="mt-4 text-lg text-ink-soft">{t("golden.body")}</p>
+        <p className="mt-3 font-display text-xl font-bold text-primary">{t("golden.tagline")}</p>
       </section>
 
       {/* CÓMO FUNCIONA */}
       <section className="bg-surface py-16">
         <div className="mx-auto max-w-6xl px-4">
-          <h2 className="text-center font-display text-3xl font-bold text-ink sm:text-4xl">Aprende inglés dibujando</h2>
-          <p className="mx-auto mt-3 max-w-xl text-center text-ink-soft">Así de simple: tres pasos que tu hijo entiende sin que le expliques.</p>
+          <h2 className="text-center font-display text-3xl font-bold text-ink sm:text-4xl">{t("how.title")}</h2>
+          <p className="mx-auto mt-3 max-w-xl text-center text-ink-soft">{t("how.subtitle")}</p>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {STEPS.map((s, i) => (
+            {steps.map((s, i) => (
               <div key={s.n} className="rounded-3xl border border-border bg-paper p-6 shadow-soft">
                 <div className="canvas-paper mb-5 grid aspect-square place-items-center overflow-hidden rounded-2xl">
                   {s.img ? <img src={s.img} alt="" className="h-full w-full object-contain p-2" onError={hideImg} /> : <WordCardMock />}
@@ -253,88 +183,80 @@ function LandingPage() {
 
       {/* DEMO INTERACTIVO */}
       <section className="mx-auto max-w-4xl px-4 py-16 text-center">
-        <span className="font-display text-sm font-bold uppercase tracking-wide text-secondary">Pruébalo tú mismo</span>
-        <h2 className="mt-2 font-display text-3xl font-bold text-ink sm:text-4xl">Coloréalo aquí mismo</h2>
-        <p className="mx-auto mt-3 max-w-xl text-ink-soft">
-          Elige un color, rellena o <strong className="text-ink">pinta con el dedo</strong>, y al colorear
-          <strong className="text-ink"> escucha el nombre en inglés</strong>. Así de fácil aprende tu hijo — y el color nunca se sale de la línea.
-        </p>
+        <span className="font-display text-sm font-bold uppercase tracking-wide text-secondary">{t("demo.kicker")}</span>
+        <h2 className="mt-2 font-display text-3xl font-bold text-ink sm:text-4xl">{t("demo.title")}</h2>
+        <p className="mx-auto mt-3 max-w-xl text-ink-soft">{t("demo.body")}</p>
         <div className="mt-8">
           <DemoColoring />
         </div>
       </section>
 
-      {/* LO QUE TU HIJO GANA (beneficios) */}
+      {/* BENEFICIOS */}
       <section className="mx-auto max-w-6xl px-4 py-16">
         <div className="mb-10 text-center">
-          <h2 className="font-display text-3xl font-bold text-ink sm:text-4xl">Mucho más que aprender inglés</h2>
-          <p className="mx-auto mt-3 max-w-2xl text-ink-soft">
-            Cada rato coloreando, tu hijo desarrolla habilidades que lo acompañarán el resto de su vida.
-          </p>
+          <h2 className="font-display text-3xl font-bold text-ink sm:text-4xl">{t("benefits.title")}</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-ink-soft">{t("benefits.subtitle")}</p>
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {BENEFITS.map(([e, t, b]) => (
-            <div key={t} className="rounded-3xl border border-border bg-surface p-6 shadow-soft">
+          {benefits.map(([e, title, body]) => (
+            <div key={title} className="rounded-3xl border border-border bg-surface p-6 shadow-soft">
               <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/10 text-2xl">{e}</div>
-              <h3 className="mt-4 font-display text-lg font-bold text-ink">{t}</h3>
-              <p className="mt-1.5 text-sm text-ink-soft">{b}</p>
+              <h3 className="mt-4 font-display text-lg font-bold text-ink">{title}</h3>
+              <p className="mt-1.5 text-sm text-ink-soft">{body}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* DE LA CULPA AL ORGULLO (reencuadre del tiempo de pantalla) */}
+      {/* TIEMPO DE PANTALLA */}
       <section className="bg-primary py-16 text-primary-foreground">
         <div className="mx-auto max-w-3xl px-4 text-center">
-          <h2 className="font-display text-3xl font-bold sm:text-4xl">El tiempo de pantalla, sin culpa</h2>
-          <p className="mt-4 text-lg opacity-95">
-            Sabemos lo que es ceder la tablet y sentir que pierdes la batalla. Con Pinturitas, esos minutos dejan
-            de ser tiempo vacío: tu hijo colorea tranquilo mientras aprende algo que le servirá toda la vida.
-          </p>
-          <p className="mt-3 font-display text-xl font-bold">Tú respiras. Él crece.</p>
+          <h2 className="font-display text-3xl font-bold sm:text-4xl">{t("screen.title")}</h2>
+          <p className="mt-4 text-lg opacity-95">{t("screen.body")}</p>
+          <p className="mt-3 font-display text-xl font-bold">{t("screen.tagline")}</p>
         </div>
       </section>
 
       {/* MUNDOS */}
       <section className="mx-auto max-w-6xl px-4 py-16">
         <div className="mb-8 text-center">
-          <h2 className="font-display text-3xl font-bold text-ink sm:text-4xl">33 mundos para explorar</h2>
-          <p className="mx-auto mt-3 max-w-xl text-ink-soft">De las mascotas al fondo del mar. Cada mundo, una aventura nueva y decenas de palabras que aprende sin darse cuenta.</p>
+          <h2 className="font-display text-3xl font-bold text-ink sm:text-4xl">{t("worldsSec.title")}</h2>
+          <p className="mx-auto mt-3 max-w-xl text-ink-soft">{t("worldsSec.subtitle")}</p>
         </div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
-          {WORLDS.map((w) => (
-            <div key={w.slug} className="relative overflow-hidden rounded-2xl shadow-soft">
-              <img src={`/covers/${w.slug}.png`} alt={w.name} loading="lazy" decoding="async" className="aspect-square w-full object-cover" onError={hideImg} />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent px-2 py-1.5">
-                <span className="font-display text-xs font-bold text-white">{w.name}</span>
+          {WORLD_SLUGS.map((slug) => {
+            const name = t(`worlds.${slug}`);
+            return (
+              <div key={slug} className="relative overflow-hidden rounded-2xl shadow-soft">
+                <img src={`/covers/${slug}.png`} alt={name} loading="lazy" decoding="async" className="aspect-square w-full object-cover" onError={hideImg} />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent px-2 py-1.5">
+                  <span className="font-display text-xs font-bold text-white">{name}</span>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
           <div className="grid aspect-square place-items-center rounded-2xl bg-primary/10 text-center">
-            <span className="px-2 font-display text-sm font-bold text-primary">+ vocabulario nuevo cada mes</span>
+            <span className="px-2 font-display text-sm font-bold text-primary">{t("worldsSec.more")}</span>
           </div>
         </div>
       </section>
 
       {/* JUEGOS */}
       <section className="mx-auto max-w-4xl px-4 py-16 text-center">
-        <span className="font-display text-sm font-bold uppercase tracking-wide text-secondary">Además de colorear</span>
-        <h2 className="mt-2 font-display text-3xl font-bold text-ink sm:text-4xl">El inglés se vuelve su juego favorito</h2>
-        <p className="mx-auto mt-3 max-w-xl text-ink-soft">
-          5 mini-juegos que repasan las palabras que tu hijo aprendió coloreando. Para él es solo diversión —
-          para ti, vocabulario que se le queda.
-        </p>
+        <span className="font-display text-sm font-bold uppercase tracking-wide text-secondary">{t("games.kicker")}</span>
+        <h2 className="mt-2 font-display text-3xl font-bold text-ink sm:text-4xl">{t("games.title")}</h2>
+        <p className="mx-auto mt-3 max-w-xl text-ink-soft">{t("games.body")}</p>
         <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-5">
           {[
-            ["👂", "Escucha y Toca"],
-            ["🃏", "Memorama"],
-            ["🕵️", "¿Quién soy?"],
-            ["🎨", "Pinta lo que escuchas"],
-            ["⭐", "Repaso del día"],
-          ].map(([e, t]) => (
-            <div key={t} className="rounded-2xl border border-border bg-surface p-4 shadow-soft">
+            ["👂", t("games.g1")],
+            ["🃏", t("games.g2")],
+            ["🕵️", t("games.g3")],
+            ["🎨", t("games.g4")],
+            ["⭐", t("games.g5")],
+          ].map(([e, label]) => (
+            <div key={label} className="rounded-2xl border border-border bg-surface p-4 shadow-soft">
               <div className="text-3xl">{e}</div>
-              <div className="mt-2 font-display text-sm font-bold leading-tight text-ink">{t}</div>
+              <div className="mt-2 font-display text-sm font-bold leading-tight text-ink">{label}</div>
             </div>
           ))}
         </div>
@@ -344,23 +266,20 @@ function LandingPage() {
       <section className="bg-surface py-16">
         <div className="mx-auto grid max-w-5xl items-center gap-10 px-4 md:grid-cols-2">
           <div className="order-2 md:order-1">
-            <span className="font-display text-sm font-bold uppercase tracking-wide text-secondary">Bilingüe y hablado</span>
-            <h2 className="mt-2 font-display text-3xl font-bold text-ink sm:text-4xl">Escucha, repite, aprende</h2>
-            <p className="mt-4 text-lg text-ink-soft">
-              Cada dibujo y cada color se pronuncian en inglés y en español. Tu hijo asocia la imagen, el sonido y
-              el color a la vez — la forma más natural de aprender un idioma a esta edad.
-            </p>
+            <span className="font-display text-sm font-bold uppercase tracking-wide text-secondary">{t("bilingual.kicker")}</span>
+            <h2 className="mt-2 font-display text-3xl font-bold text-ink sm:text-4xl">{t("bilingual.title")}</h2>
+            <p className="mt-4 text-lg text-ink-soft">{t("bilingual.body")}</p>
             <ul className="mt-5 space-y-2 text-ink">
-              <li className="flex gap-2"><span className="text-secondary">✓</span> Pronunciación en inglés real, dentro de la app</li>
-              <li className="flex gap-2"><span className="text-secondary">✓</span> La paleta también enseña los colores en inglés</li>
-              <li className="flex gap-2"><span className="text-secondary">✓</span> Pronunciación escrita para que tu hijo también la diga</li>
+              <li className="flex gap-2"><span className="text-secondary">✓</span> {t("bilingual.li1")}</li>
+              <li className="flex gap-2"><span className="text-secondary">✓</span> {t("bilingual.li2")}</li>
+              <li className="flex gap-2"><span className="text-secondary">✓</span> {t("bilingual.li3")}</li>
             </ul>
           </div>
           <div className="order-1 flex justify-center md:order-2"><WordCardMock large /></div>
         </div>
       </section>
 
-      {/* UN RATO QUE LOS UNE (vínculo) */}
+      {/* UN RATO QUE LOS UNE */}
       <section className="mx-auto max-w-5xl px-4 py-16">
         <div className="grid items-center gap-10 md:grid-cols-2">
           <div className="grid grid-cols-2 gap-3">
@@ -369,12 +288,9 @@ function LandingPage() {
             ))}
           </div>
           <div>
-            <span className="font-display text-sm font-bold uppercase tracking-wide text-secondary">Juntos</span>
-            <h2 className="mt-2 font-display text-3xl font-bold text-ink sm:text-4xl">Un rato que los une</h2>
-            <p className="mt-4 text-lg text-ink-soft">
-              Siéntate a su lado, repite las palabras en inglés con él, celebra cada dibujo terminado. No necesitas
-              saber inglés — la app lo pronuncia por ti. Aprenden juntos, y esos momentos son los que él recordará.
-            </p>
+            <span className="font-display text-sm font-bold uppercase tracking-wide text-secondary">{t("together.kicker")}</span>
+            <h2 className="mt-2 font-display text-3xl font-bold text-ink sm:text-4xl">{t("together.title")}</h2>
+            <p className="mt-4 text-lg text-ink-soft">{t("together.body")}</p>
           </div>
         </div>
       </section>
@@ -382,18 +298,18 @@ function LandingPage() {
       {/* PARA PAPÁS */}
       <section className="bg-surface py-16">
         <div className="mx-auto max-w-5xl px-4">
-          <h2 className="text-center font-display text-3xl font-bold text-ink sm:text-4xl">Tranquilidad para ti</h2>
+          <h2 className="text-center font-display text-3xl font-bold text-ink sm:text-4xl">{t("parents.title")}</h2>
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              ["📈", "Ves su progreso", "Cuántas palabras domina y cuánto ha jugado, en un panel claro."],
-              ["🔒", "Zona de padres", "Los ajustes y pagos viven detrás de una puerta que el niño no cruza."],
-              ["🚫", "Sin anuncios", "Nada de publicidad ni enlaces externos mientras tu hijo colorea."],
-              ["👨‍👩‍👧", "Hasta 4 hijos", "Un perfil por niño, cada uno con su galería y su progreso."],
-            ].map(([e, t, b]) => (
-              <div key={t} className="rounded-3xl border border-border bg-paper p-5 shadow-soft">
+              ["📈", t("parents.p1t"), t("parents.p1b")],
+              ["🔒", t("parents.p2t"), t("parents.p2b")],
+              ["🚫", t("parents.p3t"), t("parents.p3b")],
+              ["👨‍👩‍👧", t("parents.p4t"), t("parents.p4b")],
+            ].map(([e, title, body]) => (
+              <div key={title} className="rounded-3xl border border-border bg-paper p-5 shadow-soft">
                 <div className="text-3xl">{e}</div>
-                <h3 className="mt-3 font-display text-lg font-bold text-ink">{t}</h3>
-                <p className="mt-1 text-sm text-ink-soft">{b}</p>
+                <h3 className="mt-3 font-display text-lg font-bold text-ink">{title}</h3>
+                <p className="mt-1 text-sm text-ink-soft">{body}</p>
               </div>
             ))}
           </div>
@@ -403,28 +319,21 @@ function LandingPage() {
       {/* NUESTRA MISIÓN */}
       <section className="mx-auto max-w-3xl px-4 py-16 text-center">
         <div className="text-4xl">💛</div>
-        <h2 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">Por qué hicimos Pinturitas</h2>
-        <p className="mt-4 text-lg text-ink-soft">
-          Creemos que las horas frente a una pantalla pueden ser algo más que ruido y colores que pasan. Nacimos
-          con una idea simple: convertir el rato favorito de tu hijo —colorear— en su primera puerta al inglés, en
-          los años en que su mente más lo aprovecha. Sin presión, sin tareas, sin apuros. Solo un niño, sus colores
-          y una palabra nueva cada día.
-        </p>
-        <p className="mt-4 font-display text-lg font-bold text-primary">Ese es todo nuestro propósito.</p>
-        <p className="mt-2 text-sm text-ink-soft">— El equipo de Pinturitas</p>
+        <h2 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">{t("mission.title")}</h2>
+        <p className="mt-4 text-lg text-ink-soft">{t("mission.body")}</p>
+        <p className="mt-4 font-display text-lg font-bold text-primary">{t("mission.tagline")}</p>
+        <p className="mt-2 text-sm text-ink-soft">{t("mission.sign")}</p>
       </section>
 
-      {/* PLANES (2) */}
+      {/* PLANES */}
       <section id="planes" className="mx-auto max-w-4xl px-4 py-16">
         <div className="mb-3 text-center">
-          <h2 className="font-display text-3xl font-bold text-ink sm:text-4xl">Un precio, todo incluido</h2>
-          <p className="mx-auto mt-3 max-w-xl text-ink-soft">
-            Los dos planes dan exactamente lo mismo. Al pagar anual, ahorras la mitad.
-          </p>
+          <h2 className="font-display text-3xl font-bold text-ink sm:text-4xl">{t("plans.title")}</h2>
+          <p className="mx-auto mt-3 max-w-xl text-ink-soft">{t("plans.subtitle")}</p>
         </div>
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
-          {PLANS.map((p) => (
-            <div key={p.name} className={`relative rounded-3xl border-2 bg-surface p-6 shadow-soft ${p.best ? "border-primary" : "border-border"}`}>
+          {plans.map((p) => (
+            <div key={p.code} className={`relative rounded-3xl border-2 bg-surface p-6 shadow-soft ${p.best ? "border-primary" : "border-border"}`}>
               {p.tag && (
                 <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-0.5 text-[11px] font-bold text-primary-foreground">
                   {p.tag}
@@ -437,22 +346,22 @@ function LandingPage() {
               </div>
               <div className="min-h-[20px] text-xs text-ink-soft">{p.note}</div>
               <ul className="mt-4 space-y-1.5 text-sm text-ink">
-                {PLAN_FEATURES.map((f) => (
+                {planFeatures.map((f) => (
                   <li key={f} className="flex gap-2"><span className="text-secondary">✓</span> {f}</li>
                 ))}
               </ul>
               <a href={p.url} className={`mt-5 block w-full rounded-2xl py-3 text-center font-display font-bold active:scale-95 ${p.best ? "bg-primary text-primary-foreground shadow-crayon" : "border border-border text-ink"}`}>
-                Suscribirme
+                {t("plans.subscribe")}
               </a>
             </div>
           ))}
         </div>
         <p className="mt-5 flex items-center justify-center gap-1.5 text-center text-sm font-semibold text-secondary">
-          <span>✓</span> Cancela cuando quieras, sin permanencia ni letra chica.
+          <span>✓</span> {t("plans.cancelNote")}
         </p>
         <p className="mt-2 text-center text-sm text-ink-soft">
-          El acceso es solo para suscriptores. ¿Ya tienes cuenta?{" "}
-          <Link to="/auth" className="font-semibold text-primary">Entra aquí</Link>.
+          {t("plans.haveAccount")}{" "}
+          <Link to="/auth" className="font-semibold text-primary">{t("plans.haveAccountLink")}</Link>.
         </p>
       </section>
 
@@ -460,16 +369,16 @@ function LandingPage() {
       <section className="mx-auto max-w-4xl px-4 pb-2">
         <div className="rounded-3xl border border-border bg-surface p-6 text-center shadow-soft sm:p-8">
           <div className="text-3xl">🛡️</div>
-          <h2 className="mt-2 font-display text-2xl font-bold text-ink">Sin riesgo, sin ataduras</h2>
+          <h2 className="mt-2 font-display text-2xl font-bold text-ink">{t("risk.title")}</h2>
           <div className="mt-5 grid gap-4 sm:grid-cols-3">
             {[
-              ["Cancela cuando quieras", "Sin permanencia ni letra chica."],
-              ["Tú tienes el control", "Gestionas tu suscripción cuando lo decidas."],
-              ["Acceso completo", "Desde el primer día, los 33 mundos."],
-            ].map(([t, b]) => (
-              <div key={t}>
-                <div className="font-display font-bold text-ink">{t}</div>
-                <div className="text-sm text-ink-soft">{b}</div>
+              [t("risk.r1t"), t("risk.r1b")],
+              [t("risk.r2t"), t("risk.r2b")],
+              [t("risk.r3t"), t("risk.r3b")],
+            ].map(([title, body]) => (
+              <div key={title}>
+                <div className="font-display font-bold text-ink">{title}</div>
+                <div className="text-sm text-ink-soft">{body}</div>
               </div>
             ))}
           </div>
@@ -479,9 +388,9 @@ function LandingPage() {
       {/* FAQ */}
       <section className="bg-surface py-16">
         <div className="mx-auto max-w-2xl px-4">
-          <h2 className="text-center font-display text-3xl font-bold text-ink sm:text-4xl">Preguntas frecuentes</h2>
+          <h2 className="text-center font-display text-3xl font-bold text-ink sm:text-4xl">{t("faq.title")}</h2>
           <div className="mt-8 space-y-3">
-            {FAQS.map((f) => (
+            {faqs.map((f) => (
               <details key={f.q} className="group rounded-2xl border border-border bg-paper p-4">
                 <summary className="flex cursor-pointer list-none items-center justify-between font-display font-bold text-ink">
                   {f.q}
@@ -497,16 +406,12 @@ function LandingPage() {
       {/* CTA FINAL */}
       <section className="mx-auto max-w-4xl px-4 py-20 text-center">
         <h2 className="font-display text-4xl font-bold text-ink sm:text-5xl">
-          Su ventaja empieza <span className="text-primary">hoy</span>
+          {t("ctaFinal.titleA")} <span className="text-primary">{t("ctaFinal.titleHi")}</span>
         </h2>
-        <p className="mx-auto mt-4 max-w-lg text-lg text-ink-soft">
-          Elige tu plan y desbloquea los 33 mundos para que tu hijo pinte su primera palabra en inglés.
-        </p>
-        <p className="mx-auto mt-3 max-w-lg font-display text-xl font-bold text-primary">
-          El inglés deja de ser tarea y se vuelve su juego favorito.
-        </p>
+        <p className="mx-auto mt-4 max-w-lg text-lg text-ink-soft">{t("ctaFinal.body")}</p>
+        <p className="mx-auto mt-3 max-w-lg font-display text-xl font-bold text-primary">{t("ctaFinal.tagline")}</p>
         <a href="#planes" className="mt-8 inline-block rounded-2xl bg-primary px-9 py-4 font-display text-lg font-bold text-primary-foreground shadow-crayon active:scale-95">
-          Suscríbete ahora
+          {t("ctaFinal.button")}
         </a>
       </section>
 
@@ -517,7 +422,7 @@ function LandingPage() {
             <img src="/brand/app-icon.png" alt="" className="h-7 w-7 rounded-lg object-cover" onError={hideImg} />
             <span className="font-display font-bold text-ink">Pinturitas</span>
           </div>
-          <p>Colorea y aprende inglés · 3 a 7 años</p>
+          <p>{t("footer.tagline")}</p>
           <Link to="/auth" className="font-display font-bold text-primary">{appLabel}</Link>
         </div>
       </footer>
@@ -540,17 +445,18 @@ const DEMO_COLORS = [
   { hex: "#2B2B2B", en: "Black", es: "negro" },
 ];
 
-/** La palabra que enseña el dibujo del demo (lámina: perro). */
-const DEMO_WORD = { en: "Dog", es: "perro" };
+/** La palabra en inglés que enseña el dibujo del demo (lámina: perro). */
+const DEMO_WORD_EN = "Dog";
 
 /** Mini estudio de coloreo en la landing: el mismo motor real de la app. */
 function DemoColoring() {
+  const { t } = useI18n();
   const ref = useRef<ColoringCanvasHandle>(null);
   const [color, setColor] = useState(DEMO_COLORS[1].hex);
   const [tool, setTool] = useState<"fill" | "brush">("fill");
 
   // El nombre se escucha SOLO al tocar la bocina, y SOLO en inglés.
-  const sayWord = () => speak(DEMO_WORD.en);
+  const sayWord = () => speak(DEMO_WORD_EN);
 
   return (
     <div className="mx-auto max-w-sm">
@@ -558,7 +464,7 @@ function DemoColoring() {
       <button
         type="button"
         onClick={sayWord}
-        aria-label={`Escuchar "${DEMO_WORD.en}" en inglés`}
+        aria-label={`${DEMO_WORD_EN} — ${t("demo.tapListen")}`}
         className="mx-auto mb-4 flex items-center gap-3 rounded-2xl border border-border bg-surface px-4 py-2.5 shadow-soft transition-transform active:scale-95"
       >
         <span className="grid h-11 w-11 flex-none place-items-center rounded-full bg-primary text-primary-foreground">
@@ -568,8 +474,8 @@ function DemoColoring() {
           </svg>
         </span>
         <span className="text-left leading-tight">
-          <span className="block font-display text-2xl font-bold text-ink">{DEMO_WORD.en}</span>
-          <span className="block text-xs text-ink-soft">{DEMO_WORD.es} · toca para escuchar 🔊</span>
+          <span className="block font-display text-2xl font-bold text-ink">{DEMO_WORD_EN}</span>
+          <span className="block text-xs text-ink-soft">{t("demo.tapListen")} 🔊</span>
         </span>
       </button>
 
@@ -584,15 +490,15 @@ function DemoColoring() {
       {/* Herramienta: rellenar (balde) o pintar libre con el dedo */}
       <div className="mt-3 flex justify-center gap-2">
         {([
-          ["fill", "🪣 Rellenar"],
-          ["brush", "✏️ Pintar con el dedo"],
-        ] as const).map(([t, label]) => (
+          ["fill", t("demo.fill")],
+          ["brush", t("demo.brush")],
+        ] as const).map(([tk, label]) => (
           <button
-            key={t}
+            key={tk}
             type="button"
-            onClick={() => setTool(t)}
+            onClick={() => setTool(tk)}
             className={`rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors ${
-              tool === t
+              tool === tk
                 ? "border-primary bg-primary text-primary-foreground"
                 : "border-border text-ink-soft hover:text-ink"
             }`}
@@ -607,7 +513,7 @@ function DemoColoring() {
           <button
             key={c.hex}
             onClick={() => setColor(c.hex)}
-            aria-label={`${c.en}, ${c.es}`}
+            aria-label={c.en}
             className="aspect-square rounded-xl border-2 transition-transform active:scale-90"
             style={{ background: c.hex, borderColor: color === c.hex ? "var(--color-ink)" : "rgba(0,0,0,.14)" }}
           />
@@ -618,28 +524,24 @@ function DemoColoring() {
         onClick={() => ref.current?.clear()}
         className="mt-3 rounded-full border border-border px-4 py-1.5 text-sm font-semibold text-ink-soft hover:text-ink"
       >
-        Reiniciar
+        {t("demo.reset")}
       </button>
 
       {/* Deja claro que es apenas una muestra de todo lo que hay dentro */}
       <p className="mx-auto mt-6 max-w-md rounded-2xl bg-surface px-5 py-4 text-sm text-ink-soft">
-        Esto es <strong className="text-ink">solo una muestra</strong>. Dentro, tu hijo encuentra
-        <strong className="text-ink"> cientos de dibujos</strong> en 33 mundos,{" "}
-        <strong className="text-ink">juegos para reforzar el inglés</strong>, cada palabra hablada,
-        pinceles, premios y su avance guardado. Ideal para niños de <strong className="text-ink">3 a 7 años</strong>.
+        {t("demo.note")}
       </p>
     </div>
   );
 }
 
-/** Maqueta de la tarjeta de palabra (feature bilingüe hablado). */
+/** Maqueta de la tarjeta de palabra (feature bilingüe hablado). El niño aprende inglés. */
 function WordCardMock({ large = false }: { large?: boolean }) {
   return (
     <div className={`flex items-center gap-3 rounded-3xl border border-border bg-surface shadow-crayon ${large ? "w-full max-w-xs p-5" : "p-4"}`}>
       <div className="min-w-0 flex-1">
         <div className={`font-display font-bold text-ink ${large ? "text-4xl" : "text-2xl"}`}>Dog</div>
-        <div className="text-sm text-ink-soft">perro</div>
-        <div className="font-mono text-xs text-secondary">se dice: dog</div>
+        <div className="font-mono text-xs text-secondary">🔊 dog</div>
       </div>
       <span className="grid h-12 w-12 flex-none place-items-center rounded-full bg-primary text-primary-foreground">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
